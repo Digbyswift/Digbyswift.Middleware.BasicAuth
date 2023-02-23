@@ -11,9 +11,9 @@
         <RepositoryUrl>https://github.com/digbyswift/Digbyswift.Middleware.BasicAuth</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
-        <PackageVersion>1.0.0</PackageVersion>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
+        <FileVersion>1.1.0</FileVersion>
+        <PackageVersion>1.1.0-beta</PackageVersion>
         <LangVersion>10</LangVersion>
         <PackageIcon>package-icon.png</PackageIcon>
         <PackageIconUrl>package-icon.png</PackageIconUrl>
@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <PackageReference Include="Digbyswift.Core" Version="1.1.2" />
+        <PackageReference Include="Digbyswift.Extensions.Http" Version="1.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />

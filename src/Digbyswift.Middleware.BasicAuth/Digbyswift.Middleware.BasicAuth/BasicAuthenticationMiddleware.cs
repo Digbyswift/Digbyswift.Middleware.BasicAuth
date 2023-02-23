@@ -1,14 +1,19 @@
 using System.Text;
 using Digbyswift.Core.Constants;
+using Digbyswift.Extensions;
+using Digbyswift.Extensions.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 
 namespace Digbyswift.Middleware.BasicAuth
 {
     public sealed class BasicAuthenticationMiddleware : IMiddleware
     {
+        private const string AuthBypassHeaderName = "AuthBypass";
+        
         private readonly BasicAuthSettings _authSettings;
 
         public BasicAuthenticationMiddleware(IOptions<BasicAuthSettings> authSettings)
@@ -31,10 +36,19 @@ namespace Digbyswift.Middleware.BasicAuth
 
         public async Task<DelegateResult> ExecuteAsync(HttpContext context)
         {
-            if (context.Request.Headers.ContainsKey("AuthBypass") &&
-                context.Request.Headers["AuthBypass"].SingleOrDefault() == _authSettings.BypassKey)
+            if (HasByPassKey(context.Request))
                 return DelegateResult.AllowContinue;
 
+            if (CanAllowPath(context.Request.Path))
+                return DelegateResult.AllowContinue;
+            
+            if (CanAllowReferrer(context.Request.Headers[HeaderNames.Referer]))
+                return DelegateResult.AllowContinue;
+
+            var clientIp = context.Request.GetClientIp().ToString();
+            if (CanAllowIp(clientIp))
+                return DelegateResult.AllowContinue;
+            
             var authenticateResult = await context.AuthenticateAsync(BasicAuthSettings.AuthenticationSchemeName);
             if (authenticateResult.Succeeded)
                 return DelegateResult.AllowContinue;
@@ -48,14 +62,55 @@ namespace Digbyswift.Middleware.BasicAuth
 
             return DelegateResult.Terminate;
         }
+        
+        private bool HasByPassKey(HttpRequest request)
+        {
+            if (String.IsNullOrWhiteSpace(_authSettings.BypassKey))
+                return false;
+            
+            if (request.Headers[AuthBypassHeaderName] == StringValues.Empty)
+                return false;
+            
+            return request.Headers[AuthBypassHeaderName][0] == _authSettings.BypassKey;
+        }
 
-        private static bool TryGetBasicAuthCredentials(HttpContext httpContext, out string? username,
-            out string? password)
+        private bool CanAllowPath(PathString path)
+        {
+            if (_authSettings.ExcludedPaths == null)
+                return false;
+            
+            return _authSettings.ExcludedPaths.Any(excludedPath => path.StartsWithSegments(excludedPath));
+        }
+
+        private bool CanAllowReferrer(StringValues referrer)
+        {
+            if (String.IsNullOrWhiteSpace(referrer))
+                return false;
+            
+            if (_authSettings.WhitelistedReferrers == null)
+                return false;
+
+            var primaryReferrer = referrer[0];
+            if (primaryReferrer == null)
+                return false;
+                
+            return _authSettings.WhitelistedReferrers.Any(x => primaryReferrer.StartsWith(x));
+        }
+
+        private bool CanAllowIp(string clientIp)
+        {
+            if (_authSettings.WhitelistedIPs == null)
+                return false;
+            
+            return _authSettings.WhitelistedIPs.Any(ip => ip.EqualsIgnoreCase(clientIp));
+        }
+
+        private static bool TryGetBasicAuthCredentials(HttpContext httpContext, out string? username, out string? password)
         {
             username = null;
             password = null;
 
-            if (!httpContext.Request.Headers.TryGetValue("Authorization", out StringValues authHeaders))
+            if (!httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out StringValues authHeaders))
                 return false;
 
             var authHeader = authHeaders.ToString();
@@ -80,7 +135,7 @@ namespace Digbyswift.Middleware.BasicAuth
         private void SetUnauthorizedHeader(HttpContext context)
         {
             context.Response.StatusCode = 401;
-            context.Response.Headers.Add("WWW-Authenticate", $"Basic realm=\"{_authSettings.Realm}\"");
+            context.Response.Headers.Add(HeaderNames.WWWAuthenticate, $"Basic realm=\"{_authSettings.Realm}\"");
         }
     }
 }

@@ -9,7 +9,11 @@ No thrills BasicAuth middleware.
     "Enabled": true/false,
     "Username": "",
     "Password": "",
-    "Realm": ""
+    "Realm": "",
+    "ByPassKey": "",
+    "ExcludedPaths": ["/robots.txt", "/media"],
+    "WhitelistedReferrers":  ["https://example.net", "https://www.example.com"],
+    "WhitelistedIPs":  ["127.0.0.1", "127.0.0.2"]
 }
 ```
 
