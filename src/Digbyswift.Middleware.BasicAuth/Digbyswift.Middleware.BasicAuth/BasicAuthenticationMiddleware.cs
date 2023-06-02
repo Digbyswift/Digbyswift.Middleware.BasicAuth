@@ -1,4 +1,4 @@
-using System.Text;
+using System.Net;
 using Digbyswift.Core.Constants;
 using Digbyswift.Extensions;
 using Digbyswift.Extensions.Http;
@@ -12,7 +12,7 @@ namespace Digbyswift.Middleware.BasicAuth
 {
     public sealed class BasicAuthenticationMiddleware : IMiddleware
     {
-        private const string AuthBypassHeaderName = "AuthBypass";
+        private const string AuthBypassHeaderName = "X-Basic-Auth-Bypass";
         
         private readonly BasicAuthSettings _authSettings;
 
@@ -24,8 +24,7 @@ namespace Digbyswift.Middleware.BasicAuth
         /// <inheritdoc />
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var result = await ExecuteAsync(context);
-            if (result == DelegateResult.Terminate)
+            if (!await TryAuthenticateAsync(context))
             {
                 SetUnauthorizedHeader(context);
                 return;
@@ -34,33 +33,28 @@ namespace Digbyswift.Middleware.BasicAuth
             await next(context);
         }
 
-        public async Task<DelegateResult> ExecuteAsync(HttpContext context)
+        private async Task<bool> TryAuthenticateAsync(HttpContext context)
         {
             if (HasByPassKey(context.Request))
-                return DelegateResult.AllowContinue;
+                return true;
 
-            if (CanAllowPath(context.Request.Path))
-                return DelegateResult.AllowContinue;
+            if (CanAllowPath(context.Request))
+                return true;
             
-            if (CanAllowReferrer(context.Request.Headers[HeaderNames.Referer]))
-                return DelegateResult.AllowContinue;
+            if (CanAllowReferrer(context.Request))
+                return true;
 
-            var clientIp = context.Request.GetClientIp().ToString();
-            if (CanAllowIp(clientIp))
-                return DelegateResult.AllowContinue;
+            if (CanAllowIp(context.Request))
+                return true;
             
             var authenticateResult = await context.AuthenticateAsync(BasicAuthSettings.AuthenticationSchemeName);
             if (authenticateResult.Succeeded)
-                return DelegateResult.AllowContinue;
+                return true;
 
-            if (TryGetBasicAuthCredentials(context, out var username, out var password))
-            {
-                if (username!.Equals(_authSettings.Username, StringComparison.OrdinalIgnoreCase) &&
-                    password == _authSettings.Password)
-                    return DelegateResult.AllowContinue;
-            }
-
-            return DelegateResult.Terminate;
+            if (!TryGetBasicAuthCredentials(context, out var username, out var password) || String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password))
+                return false;
+            
+            return username.EqualsIgnoreCase(_authSettings.Username!) && password == _authSettings.Password;
         }
         
         private bool HasByPassKey(HttpRequest request)
@@ -74,20 +68,22 @@ namespace Digbyswift.Middleware.BasicAuth
             return request.Headers[AuthBypassHeaderName][0] == _authSettings.BypassKey;
         }
 
-        private bool CanAllowPath(PathString path)
+        private bool CanAllowPath(HttpRequest request)
         {
             if (_authSettings.ExcludedPaths == null)
                 return false;
-            
+
+            var path = request.Path;
             return _authSettings.ExcludedPaths.Any(excludedPath => path.StartsWithSegments(excludedPath));
         }
 
-        private bool CanAllowReferrer(StringValues referrer)
+        private bool CanAllowReferrer(HttpRequest request)
         {
-            if (String.IsNullOrWhiteSpace(referrer))
-                return false;
-            
             if (_authSettings.WhitelistedReferrers == null)
+                return false;
+
+            var referrer = request.Headers[HeaderNames.Referer];
+            if (String.IsNullOrWhiteSpace(referrer))
                 return false;
 
             var primaryReferrer = referrer[0];
@@ -97,11 +93,15 @@ namespace Digbyswift.Middleware.BasicAuth
             return _authSettings.WhitelistedReferrers.Any(x => primaryReferrer.StartsWith(x));
         }
 
-        private bool CanAllowIp(string clientIp)
+        private bool CanAllowIp(HttpRequest request)
         {
             if (_authSettings.WhitelistedIPs == null)
                 return false;
             
+            var clientIp = request.GetClientIp().ToString();
+            if (String.IsNullOrWhiteSpace(clientIp))
+                return false;
+
             return _authSettings.WhitelistedIPs.Any(ip => ip.EqualsIgnoreCase(clientIp));
         }
 
@@ -118,7 +118,7 @@ namespace Digbyswift.Middleware.BasicAuth
                 return false;
 
             var encodedCredentials = authHeader.Substring(6).Trim();
-            var decodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(encodedCredentials));
+            var decodedCredentials = encodedCredentials.Base64Decode();
             if (!decodedCredentials.Contains(StringConstants.Colon))
                 return false;
 
@@ -128,13 +128,13 @@ namespace Digbyswift.Middleware.BasicAuth
 
             username = credentialParts[0];
             password = credentialParts[1];
-
+            
             return true;
         }
 
         private void SetUnauthorizedHeader(HttpContext context)
         {
-            context.Response.StatusCode = 401;
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             context.Response.Headers.Add(HeaderNames.WWWAuthenticate, $"Basic realm=\"{_authSettings.Realm}\"");
         }
     }
