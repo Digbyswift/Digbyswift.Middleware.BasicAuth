@@ -20,6 +20,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>c# middleware</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
     <ItemGroup>
