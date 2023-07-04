@@ -1,7 +1,7 @@
 using System.Net;
 using Digbyswift.Core.Constants;
-using Digbyswift.Extensions;
-using Digbyswift.Extensions.Http;
+using Digbyswift.Core.Extensions;
+using Digbyswift.Http.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
