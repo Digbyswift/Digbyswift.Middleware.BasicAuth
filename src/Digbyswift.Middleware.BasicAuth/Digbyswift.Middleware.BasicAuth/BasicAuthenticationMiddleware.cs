@@ -82,15 +82,10 @@ public sealed class BasicAuthenticationMiddleware : IMiddleware
         if (_authSettings.WhitelistedReferrers == null)
             return false;
 
-        var referrer = request.Headers[HeaderNames.Referer];
-        if (String.IsNullOrWhiteSpace(referrer))
+        if (!request.TryGetReferrer(out var referrer) || referrer == null)
             return false;
 
-        var primaryReferrer = referrer[0];
-        if (primaryReferrer == null)
-            return false;
-
-        return _authSettings.WhitelistedReferrers.Any(x => primaryReferrer.StartsWith(x));
+        return _authSettings.WhitelistedReferrers.Any(x => referrer.ToString().StartsWith(x));
     }
 
     private bool CanAllowIp(HttpRequest request)
@@ -110,7 +105,7 @@ public sealed class BasicAuthenticationMiddleware : IMiddleware
         username = null;
         password = null;
 
-        if (!httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out StringValues authHeaders))
+        if (!httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out var authHeaders))
             return false;
 
         var authHeader = authHeaders.ToString();
