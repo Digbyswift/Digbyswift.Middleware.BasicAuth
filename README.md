@@ -1,7 +1,7 @@
 # Digbyswift.Middleware.BasicAuth
 
 [![NuGet version (Digbyswift.Middleware.BasicAuth)](https://img.shields.io/nuget/v/Digbyswift.Middleware.BasicAuth.svg)](https://www.nuget.org/packages/Digbyswift.Middleware.BasicAuth/)
-![Build status](https://dev.azure.com/digbyswift/Digbyswift%20-%20OSS%20Packages/_apis/build/status/Build%20Digbyswift.Middleware.BasicAuth)
+[![Build and publish package](https://github.com/Digbyswift/Digbyswift.Middleware.BasicAuth/actions/workflows/dotnet-build-publish.yml/badge.svg)](https://github.com/Digbyswift/Digbyswift.Middleware.BasicAuth/actions/workflows/dotnet-build-publish.yml)
 
 No thrills BasicAuth middleware.
 
