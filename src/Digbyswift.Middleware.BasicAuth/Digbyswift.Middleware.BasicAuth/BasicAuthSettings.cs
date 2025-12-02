@@ -17,10 +17,11 @@ public sealed class BasicAuthSettings
     public bool IsEnabled { get; set; }
     public string? BypassKey { get; set; }
 
+    private IEnumerable<string>? _excludedPaths;
     public IEnumerable<string> ExcludedPaths
     {
-        get => field?.Where(x => x.StartsWith(CharConstants.ForwardSlash)) ?? [];
-        set;
+        get => _excludedPaths?.Where(x => x.StartsWith(CharConstants.ForwardSlash)) ?? [];
+        set => _excludedPaths = value;
     }
 
     public IEnumerable<string> WhitelistedIPs { get; set; } = [];
