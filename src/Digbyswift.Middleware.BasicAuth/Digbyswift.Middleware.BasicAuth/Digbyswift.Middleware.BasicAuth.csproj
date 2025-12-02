@@ -11,9 +11,9 @@
         <RepositoryUrl>https://github.com/digbyswift/Digbyswift.Middleware.BasicAuth</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.5.1</AssemblyVersion>
-        <FileVersion>1.5.1</FileVersion>
-        <PackageVersion>1.5.1-preview0</PackageVersion>
+        <AssemblyVersion>1.6.0</AssemblyVersion>
+        <FileVersion>1.6.0</FileVersion>
+        <PackageVersion>1.6.0</PackageVersion>
         <LangVersion>default</LangVersion>
         <PackageIcon>package-icon.png</PackageIcon>
         <PackageIconUrl>package-icon.png</PackageIconUrl>
