@@ -17,14 +17,13 @@ public sealed class BasicAuthSettings
     public bool IsEnabled { get; set; }
     public string? BypassKey { get; set; }
 
-    private IEnumerable<string>? _excludedPaths;
-    public IEnumerable<string>? ExcludedPaths
+    public IEnumerable<string> ExcludedPaths
     {
-        get => _excludedPaths?.Where(x => x.StartsWith(CharConstants.ForwardSlash)) ?? [];
-        set => _excludedPaths = value;
+        get => field?.Where(x => x.StartsWith(CharConstants.ForwardSlash)) ?? [];
+        set;
     }
 
-    public IEnumerable<string>? WhitelistedIPs { get; set; }
-    public IEnumerable<string>? WhitelistedReferrers { get; set; }
+    public IEnumerable<string> WhitelistedIPs { get; set; } = [];
+    public IEnumerable<string> WhitelistedReferrers { get; set; } = [];
 }
 }
