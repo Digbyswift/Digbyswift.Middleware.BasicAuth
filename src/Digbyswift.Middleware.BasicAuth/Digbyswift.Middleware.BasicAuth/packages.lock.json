@@ -4,11 +4,11 @@
     "net6.0": {
       "Digbyswift.Core": {
         "type": "Direct",
-        "requested": "[2.3.0, )",
-        "resolved": "2.3.0",
-        "contentHash": "+7+7mxR7H0xwyif251cwwLE/4zpyZ1L1wOErlGGAOuGCpFBSJEhbEPgf31zX2K7IfVn/+wToDi2FiIhu0BX4zQ==",
+        "requested": "[2.6.0, )",
+        "resolved": "2.6.0",
+        "contentHash": "kJZccIkf/lju43eSSLbnPnpGU8wG9s7jd4ut8Al1WfrIDKOxcHSoUx2oGfGAyM6TpdISV/PcloQJzSqE6FHBtQ==",
         "dependencies": {
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.4"
         }
       },
       "Digbyswift.Http": {
@@ -314,8 +314,8 @@
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+        "resolved": "13.0.4",
+        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
@@ -388,11 +388,11 @@
     "net8.0": {
       "Digbyswift.Core": {
         "type": "Direct",
-        "requested": "[2.3.0, )",
-        "resolved": "2.3.0",
-        "contentHash": "+7+7mxR7H0xwyif251cwwLE/4zpyZ1L1wOErlGGAOuGCpFBSJEhbEPgf31zX2K7IfVn/+wToDi2FiIhu0BX4zQ==",
+        "requested": "[2.6.0, )",
+        "resolved": "2.6.0",
+        "contentHash": "kJZccIkf/lju43eSSLbnPnpGU8wG9s7jd4ut8Al1WfrIDKOxcHSoUx2oGfGAyM6TpdISV/PcloQJzSqE6FHBtQ==",
         "dependencies": {
-          "Newtonsoft.Json": "13.0.3"
+          "Newtonsoft.Json": "13.0.4"
         }
       },
       "Digbyswift.Http": {
@@ -695,8 +695,8 @@
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+        "resolved": "13.0.4",
+        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
