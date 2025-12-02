@@ -47,4 +47,7 @@
     <ItemGroup>
         <None Include="../../../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Digbyswift.Middleware.BasicAuth.Tests" />
+    </ItemGroup>
 </Project>
