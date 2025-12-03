@@ -1,50 +1,53 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
+        <!-- Project settings -->
         <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <RootNamespace>Digbyswift.Middleware.BasicAuth</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <!-- Nuget settings -->
         <Title>Digbyswift.Middleware.BasicAuth</Title>
         <Authors>Digbyswift Ltd</Authors>
-        <Copyright>Copyright © Digbyswift Ltd</Copyright>
+        <NeutralLanguage>en-GB</NeutralLanguage>
+        <Copyright>Copyright © Digbyswift Ltd 2025</Copyright>
+        <PackageId>Digbyswift.Middleware.BasicAuth</PackageId>
         <PackageProjectUrl>https://github.com/digbyswift/Digbyswift.Middleware.BasicAuth</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/digbyswift/Digbyswift.Middleware.BasicAuth</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <AssemblyVersion>1.5.1</AssemblyVersion>
-        <FileVersion>1.5.1</FileVersion>
-        <PackageVersion>1.5.1-preview0</PackageVersion>
-        <LangVersion>default</LangVersion>
         <PackageIcon>package-icon.png</PackageIcon>
-        <PackageIconUrl>package-icon.png</PackageIconUrl>
-        <RepositoryType>git</RepositoryType>
         <PackageTags>c# middleware</PackageTags>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <PackageVersion>1.6.0</PackageVersion>
+        <AssemblyVersion>1.6.0</AssemblyVersion>
+        <FileVersion>1.6.0</FileVersion>
+        <RepositoryUrl>https://github.com/digbyswift/Digbyswift.Middleware.BasicAuth</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Digbyswift.Core" Version="2.3.0" />
-        <PackageReference Include="Digbyswift.Http" Version="1.5.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+        <PackageReference Include="Digbyswift.Core" />
+        <PackageReference Include="Digbyswift.Http" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Options"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../../../package-icon.png" Pack="true" PackagePath="" />
+        <None Include="../../../package-icon.png" Pack="true" PackagePath=""/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="../../../LICENSE" Pack="true" PackagePath="" />
+        <None Include="../../../LICENSE" Pack="true" PackagePath=""/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="../../../README.md" Pack="true" PackagePath="" />
+        <None Include="../../../README.md" Pack="true" PackagePath=""/>
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Digbyswift.Middleware.BasicAuth.Tests"/>
     </ItemGroup>
 </Project>

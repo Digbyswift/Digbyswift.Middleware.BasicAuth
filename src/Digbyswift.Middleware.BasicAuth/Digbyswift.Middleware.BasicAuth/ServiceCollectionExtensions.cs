@@ -11,11 +11,14 @@ public static class ServiceCollectionExtensions
     {
         var serviceProvider = services.BuildServiceProvider();
         var config = serviceProvider.GetService<IConfiguration>();
-        
+
         var basicAuthConfig = config?.GetSection(BasicAuthSettings.SectionName);
         var basicAuthSettings = basicAuthConfig?.Get<BasicAuthSettings>();
         if (basicAuthSettings?.IsEnabled ?? false)
         {
+            ArgumentNullException.ThrowIfNull(basicAuthSettings.Username);
+            ArgumentNullException.ThrowIfNull(basicAuthSettings.Password);
+
             services.Configure<BasicAuthSettings>(basicAuthConfig!);
             services.Configure<AuthenticationOptions>(options =>
             {

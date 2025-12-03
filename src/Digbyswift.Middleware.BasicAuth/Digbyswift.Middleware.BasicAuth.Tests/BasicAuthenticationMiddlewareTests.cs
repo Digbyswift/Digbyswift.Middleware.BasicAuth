@@ -115,7 +115,7 @@ public class BasicAuthenticationMiddlewareTests
         await middleware.InvokeAsync(_httpContext, _nextMock);
 
         // Assert
-        Assert.Multiple(async () =>
+        await Assert.MultipleAsync(async () =>
         {
             Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.OK));
             Assert.That(_httpContext.Response.Headers.ContainsKey("WWW-Authenticate"), Is.False);
@@ -143,7 +143,7 @@ public class BasicAuthenticationMiddlewareTests
         await middleware.InvokeAsync(_httpContext, _nextMock);
 
         // Assert
-        Assert.Multiple(async () =>
+        await Assert.MultipleAsync(async () =>
         {
             Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.Unauthorized));
             Assert.That(_httpContext.Response.Headers.ContainsKey("WWW-Authenticate"), Is.True);
@@ -171,7 +171,7 @@ public class BasicAuthenticationMiddlewareTests
         await middleware.InvokeAsync(_httpContext, _nextMock);
 
         // Assert
-        Assert.Multiple(async () =>
+        await Assert.MultipleAsync(async () =>
         {
             Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.Unauthorized));
             Assert.That(_httpContext.Response.Headers.ContainsKey("WWW-Authenticate"), Is.True);
@@ -197,7 +197,7 @@ public class BasicAuthenticationMiddlewareTests
         // Act
         await middleware.InvokeAsync(_httpContext, _nextMock);
 
-        Assert.Multiple(async () =>
+        await Assert.MultipleAsync(async () =>
         {
             // Assert
             Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.OK));
